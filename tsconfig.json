@@ -11,7 +11,7 @@
     "declaration": true,
     "declarationDir": "./dist",
     "removeComments": false,
-    "sourceMap": false
+    "sourceMap": true
   },
   "include": [
     "src/**/*.ts",
