@@ -36,8 +36,8 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                     if (maxRunTimeMs !== 0) {
                         timeoutId = setTimeout(() => {
                             void (async () => {
+                                /* istanbul ignore next */
                                 if (isSettled()) {
-                                    /* istanbul ignore next */
                                     return;
                                 }
                                 try {
@@ -52,8 +52,8 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                     }
 
                     worker.on('message', (result: { error?: unknown; output: unknown }) => {
+                        /* istanbul ignore next */
                         if (weAreTerminating) {
-                            /* istanbul ignore next */
                             return;
                         }
                         clearTimeout(timeoutId); // clear timeout when we are done
@@ -79,7 +79,6 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
 
 /* istanbul ignore next */
 if (!isMainThread) {
-    /* istanbul ignore next */
     void (async () => {
         const fileExtension = extname(__filename);
         const isThisTypescript = fileExtension === '.ts';
