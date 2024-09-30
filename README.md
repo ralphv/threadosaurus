@@ -1,7 +1,8 @@
 # threadosaurus
 
 [![npm version](https://img.shields.io/npm/v/threadosaurus)](https://www.npmjs.com/package/threadosaurus)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/ralphv/threadosaurus/ci.yml?branch=main)](https://github.com/ralphv/threadosaurus/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/ralphv/threadosaurus/build.yml?branch=main)](https://github.com/ralphv/threadosaurus/actions)
+[![codecov](https://codecov.io/gh/ralphv/threadosaurus/branch/main/graph/badge.svg)](https://codecov.io/gh/ralphv/threadosaurus)
 
 A simple and intuitive way to utilize worker threads in Node.js with TypeScript.
 

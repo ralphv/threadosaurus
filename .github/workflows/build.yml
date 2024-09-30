@@ -27,3 +27,12 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build
+
+      - name: Run Jest tests with coverage
+        run: npm test -- --coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info  # Path to the coverage file
+          flags: unittests
+          name: jest-coverage
