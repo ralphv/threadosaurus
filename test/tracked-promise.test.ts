@@ -1,7 +1,3 @@
-import { expect } from 'chai';
-import { CreateThreadosaurus } from '../src';
-import SampleClass from './SampleClass';
-import SampleClassMissingAdd from './SampleClassMissingAdd';
 import TrackedPromise from '../src/TrackedPromise';
 
 describe('TrackedPromise', () => {
@@ -11,7 +7,7 @@ describe('TrackedPromise', () => {
             resolve(2);
             isSettled();
         });
-        expect(result).to.equal(1);
+        expect(result).toEqual(1);
     });
     it('test calling reject twice', async () => {
         try {
@@ -19,9 +15,9 @@ describe('TrackedPromise', () => {
                 reject(new Error('failed'));
                 reject(new Error('failed 1'));
             });
-            expect.fail(`this should fail`);
+            fail(`this should fail`);
         } catch (e) {
-            expect(String(e)).to.equal('Error: failed');
+            expect(String(e)).toEqual('Error: failed');
         }
     });
 });
