@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/ralphv/threadosaurus/branch/main/graph/badge.svg)](https://codecov.io/gh/ralphv/threadosaurus)
 
 <p align="center">
-    <a href="https://gallifrey-rules.dev">
+    <a href="https://www.npmjs.com/package/threadosaurus">
       <img src="https://raw.githubusercontent.com/ralphv/threadosaurus/main/resources/threadosaurus-mini.png" alt="Logo" width="250" height="250">
     </a>
     <h3 align="center">Threadosaurus</h3>
