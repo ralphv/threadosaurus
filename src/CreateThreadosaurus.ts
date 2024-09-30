@@ -39,6 +39,7 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                         timeoutId = setTimeout(() => {
                             void (async () => {
                                 if (isSettled()) {
+                                    /* istanbul ignore next */
                                     return;
                                 }
                                 try {
@@ -54,6 +55,7 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
 
                     worker.on('message', (result: { error?: any; output: any }) => {
                         if (weAreTerminating) {
+                            /* istanbul ignore next */
                             return;
                         }
                         clearTimeout(timeoutId); // clear timeout when we are done
@@ -64,20 +66,12 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                         }
                     });
 
-                    worker.on('error', (...args) => {
-                        if (weAreTerminating) {
-                            return;
-                        }
-                        reject(...args);
-                    });
-
+                    // in case the code in worker thread prematurely calls process.exit
                     worker.on('exit', (code) => {
                         if (weAreTerminating) {
                             return;
                         }
-                        if (code !== 0) {
-                            reject(new Error(`Worker stopped with exit code ${code}`));
-                        }
+                        reject(new ThreadosaurusError(`Worker stopped with exit code ${code}`));
                     });
                 }, true);
             };
@@ -85,8 +79,9 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
     });
 }
 
-/* istanbul ignore start */
+/* istanbul ignore next */
 if (!isMainThread) {
+    /* istanbul ignore next */
     void (async () => {
         try {
             const input: WorkerDataType = workerData;
@@ -123,8 +118,6 @@ if (!isMainThread) {
         }
     })();
 }
-
-/* istanbul ignore end */
 
 export class ThreadosaurusError extends Error {}
 

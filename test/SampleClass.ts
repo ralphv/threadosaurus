@@ -25,6 +25,10 @@ export default class SampleClass implements Threadosaurus {
         return new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
+    async exit(code: number): Promise<void> {
+        process.exit(code);
+    }
+
     get__filename(): string {
         return __filename;
     }

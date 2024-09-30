@@ -2,6 +2,8 @@ import { CreateThreadosaurus } from '../src';
 import SampleClass from './SampleClass';
 import SampleClassMissingAdd from './SampleClassMissingAdd';
 
+jest.setTimeout(10000);
+
 describe('CreateThreadosaurus', () => {
     it('test addObject', async () => {
         const worker = CreateThreadosaurus(SampleClass);
@@ -60,6 +62,24 @@ describe('CreateThreadosaurus', () => {
             fail(`this should fail`);
         } catch (e) {
             expect(String(e)).toEqual("Error: method: 'add' not found on class 'SampleClassMissingAdd'");
+        }
+    });
+    it('test exit(0)', async () => {
+        const worker = CreateThreadosaurus(SampleClass);
+        try {
+            await worker.exit(0);
+            fail(`this should fail`);
+        } catch (e) {
+            expect(String(e)).toEqual('Error: Worker stopped with exit code 0');
+        }
+    });
+    it('test exit(1)', async () => {
+        const worker = CreateThreadosaurus(SampleClass);
+        try {
+            await worker.exit(1);
+            fail(`this should fail`);
+        } catch (e) {
+            expect(String(e)).toEqual('Error: Worker stopped with exit code 1');
         }
     });
 });
