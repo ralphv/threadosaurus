@@ -3,9 +3,6 @@ import { extname } from 'path';
 import TrackedPromise from './TrackedPromise';
 import { Expect } from './Expect';
 
-const fileExtension = extname(__filename);
-const isTypescript = fileExtension === '.ts';
-
 export function CreateThreadosaurus<T extends Threadosaurus>(
     ClassRef: new (...args: unknown[]) => T,
     maxRunTimeMs: number = 0,
@@ -15,16 +12,14 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
         throw new ThreadosaurusError(`method: 'get__filename' not found on class '${instance.constructor.name}'`);
     }
     const filename = instance.get__filename();
-    const isTypescriptFromClass = extname(filename) === '.ts';
+    const isWorkerTypescript = extname(filename) === '.ts';
     return new Proxy({} as T, {
         get(target: T, p: string): unknown {
             return (...args: unknown[]) => {
                 return new TrackedPromise((resolve, reject, isSettled) => {
                     let weAreTerminating = false;
                     const worker = new Worker(
-                        isTypescript || isTypescriptFromClass
-                            ? `require('ts-node').register(); require('${__filename}');`
-                            : __filename,
+                        isWorkerTypescript ? `require('ts-node').register(); require('${__filename}');` : __filename,
                         {
                             workerData: Expect<WorkerDataType>({
                                 source: CreateThreadosaurus.name,
@@ -33,7 +28,7 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                                 filename,
                                 p,
                             }),
-                            eval: isTypescript || isTypescriptFromClass,
+                            eval: isWorkerTypescript,
                         },
                     );
 
@@ -86,6 +81,9 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
 if (!isMainThread) {
     /* istanbul ignore next */
     void (async () => {
+        const fileExtension = extname(__filename);
+        const isThisTypescript = fileExtension === '.ts';
+
         try {
             const input: WorkerDataType = workerData;
             if (input.source !== CreateThreadosaurus.name) {
@@ -95,7 +93,7 @@ if (!isMainThread) {
             let filename = input.filename;
 
             if (!extname(filename)) {
-                filename = filename + (isTypescript ? '.ts' : '.js');
+                filename = filename + (isThisTypescript ? '.ts' : '.js');
             }
 
             const module: { default: { new (): unknown } } = await import(filename);
