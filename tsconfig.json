@@ -1,16 +1,24 @@
 {
   "compilerOptions": {
-    "sourceMap": false,
-    "outDir": "./dist",
+    "target": "es6",
     "module": "commonjs",
     "rootDir": ".",
-    "declarationDir": "./dist",
-    "target": "ESNext",
+    "outDir": "./dist",
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "noImplicitAny": false,
-    "forceConsistentCasingInFileNames": true,
-    "declaration": false
-  }
+    "declaration": true,
+    "declarationDir": "./dist",
+    "removeComments": false,
+    "sourceMap": false
+  },
+  "include": [
+    "src/**/*.ts",
+    "tests/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
