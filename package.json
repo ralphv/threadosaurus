@@ -1,6 +1,6 @@
 {
   "name": "threadosaurus",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "A simple and intuitive way to utilize worker threads in Node.js with TypeScript.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
