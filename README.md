@@ -15,16 +15,27 @@ npm i threadosaurus
 
 Here's a quick example of how to use Threadosaurus:
 ```typescript
-import { CreateThreadosaurus, Threadosaurus } from 'threadosaurus';
+import { CreateThreadosaurus } from 'threadosaurus';
+import SampleWorkerThreadClass from './SampleWorkerThreadClass';
 
-class SampleWorkerThreadClass implements Threadosaurus {
+const worker = CreateThreadosaurus(SampleWorkerThreadClass);
+console.log(await worker.greet('LJ and NJ'));
+```
+
+In `SampleWorkerThreadClass.ts`:
+
+```typescript
+import { Threadosaurus } from 'threadosaurus';
+
+export default class SampleWorkerThreadClass implements Threadosaurus {
     async greet(name: string): Promise<string> {
         return Promise.resolve(`Hello ${name} from worker thread!`);
     }
-}
 
-const worker = await CreateThreadosaurus(SampleWorkerThreadClass);
-console.log(await worker.greet('LJ and NJ'));
+    get__filename(): string {
+        return __filename;
+    }
+}
 ```
 
 ## Restrictions
