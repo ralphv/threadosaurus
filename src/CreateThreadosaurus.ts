@@ -1,17 +1,15 @@
-import {isMainThread, parentPort, Worker, workerData} from 'worker_threads';
-import {extname} from 'path';
+import { isMainThread, parentPort, Worker, workerData } from 'worker_threads';
+import { extname } from 'path';
 import TrackedPromise from './TrackedPromise';
-import {Expect} from "./Expect";
+import { Expect } from './Expect';
 
 const fileExtension = extname(__filename);
 const isTypescript = fileExtension === '.ts';
 
-export function CreateThreadosaurus<MethodsInterface extends object>(
-    filename: string,
-    maxRunTimeMs: number = 0,
-) {
-    return new Proxy({} as MethodsInterface, {
-        get(target: MethodsInterface, p: string, receiver: any): any {
+export function CreateThreadosaurus<T extends Threadosaurus>(instance: T, maxRunTimeMs: number = 0) {
+    const filename = instance.get__filename();
+    return new Proxy({} as T, {
+        get(target: T, p: string, receiver: any): any {
             return (...args: any[]) => {
                 return new TrackedPromise((resolve, reject, isSettled) => {
                     let weAreTerminating = false;
@@ -41,9 +39,7 @@ export function CreateThreadosaurus<MethodsInterface extends object>(
                                 } catch (e) {
                                     //ignore
                                 }
-                                reject(
-                                    new CreateThreadosaurusTimeoutError('CreateThreadosaurus execution timed out'),
-                                );
+                                reject(new CreateThreadosaurusTimeoutError('CreateThreadosaurus execution timed out'));
                             })();
                         }, maxRunTimeMs);
                     }
@@ -95,7 +91,7 @@ if (!isMainThread) {
                 filename = filename + (isTypescript ? '.ts' : '.js');
             }
 
-            const module: { default: { new(): any } } = await import(filename);
+            const module: { default: { new (): any } } = await import(filename);
 
             const instance = new module.default() as { [key: string]: (...args: any[]) => any };
             const result = await instance[input.p](...input.args);
@@ -112,7 +108,10 @@ if (!isMainThread) {
     })();
 }
 
-export class CreateThreadosaurusTimeoutError extends Error {
-}
+export class CreateThreadosaurusTimeoutError extends Error {}
 
 type WorkerDataType = { source: string; args: any[]; filename: string; p: string };
+
+export interface Threadosaurus {
+    get__filename(): string;
+}
