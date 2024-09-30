@@ -29,6 +29,10 @@ export default class SampleClass implements Threadosaurus {
         process.exit(code);
     }
 
+    async nonBasicArguments(args: any): Promise<void> {
+        return Promise.resolve();
+    }
+
     get__filename(): string {
         return __filename;
     }

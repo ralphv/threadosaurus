@@ -82,4 +82,13 @@ describe('CreateThreadosaurus', () => {
             expect(String(e)).toEqual('Error: Worker stopped with exit code 1');
         }
     });
+    it('test non basic arguments', async () => {
+        const worker = CreateThreadosaurus(SampleClass);
+        try {
+            await worker.nonBasicArguments(jest);
+            fail(`this should fail`);
+        } catch (e) {
+            expect(String(e)).toContain('DataCloneError:');
+        }
+    });
 });
