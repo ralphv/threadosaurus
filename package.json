@@ -7,7 +7,7 @@
   "files": [
     "dist/",
     "package.json",
-    "LICENSE",
+    "LICENSE.md",
     "README.md"
   ],
   "scripts": {
@@ -28,7 +28,7 @@
     "nodejs"
   ],
   "author": "Ralph Varjabedian",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ralphv/threadosaurus/issues"
   },

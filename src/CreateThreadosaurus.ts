@@ -6,7 +6,11 @@ import { Expect } from './Expect';
 const fileExtension = extname(__filename);
 const isTypescript = fileExtension === '.ts';
 
-export function CreateThreadosaurus<T extends Threadosaurus>(instance: T, maxRunTimeMs: number = 0) {
+export function CreateThreadosaurus<T extends Threadosaurus>(
+    ClassRef: new (...args: any[]) => T,
+    maxRunTimeMs: number = 0,
+) {
+    const instance = new ClassRef();
     if (!instance.get__filename) {
         throw new ThreadosaurusError(`method: 'get__filename' not found on class '${instance.constructor.name}'`);
     }
@@ -101,7 +105,11 @@ if (!isMainThread) {
             if (typeof instance[input.p] !== 'function') {
                 throw new ThreadosaurusError(`method: '${input.p}' not found on class '${input.className}'`);
             }
-            const result = await instance[input.p](...input.args);
+            const resultPromise = instance[input.p](...input.args);
+            if (!(resultPromise instanceof Promise)) {
+                throw new ThreadosaurusError(`All methods on class '${input.className}' should be async`);
+            }
+            const result = await resultPromise;
 
             parentPort?.postMessage({
                 output: result,
