@@ -1,1 +1,6 @@
-export { CreateThreadosaurus, Threadosaurus, ThreadosaurusError } from './CreateThreadosaurus';
+export {
+    CreateThreadosaurus,
+    Threadosaurus,
+    ThreadosaurusError,
+    ThreadosaurusTimeoutError,
+} from './CreateThreadosaurus';

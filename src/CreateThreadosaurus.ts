@@ -48,7 +48,7 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                                 } catch {
                                     //ignore
                                 }
-                                reject(new ThreadosaurusError('CreateThreadosaurus execution timed out'));
+                                reject(new ThreadosaurusTimeoutError('CreateThreadosaurus execution timed out'));
                             })();
                         }, maxRunTimeMs);
                     }
@@ -123,6 +123,8 @@ if (!isMainThread) {
 }
 
 export class ThreadosaurusError extends Error {}
+
+export class ThreadosaurusTimeoutError extends Error {}
 
 type WorkerDataType = { source: string; className: string; args: unknown[]; filename: string; p: string };
 
