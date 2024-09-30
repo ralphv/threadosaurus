@@ -7,7 +7,7 @@ const fileExtension = extname(__filename);
 const isTypescript = fileExtension === '.ts';
 
 export function CreateThreadosaurus<T extends Threadosaurus>(
-    ClassRef: new (...args: any[]) => T,
+    ClassRef: new (...args: unknown[]) => T,
     maxRunTimeMs: number = 0,
 ) {
     const instance = new ClassRef();
@@ -16,8 +16,8 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
     }
     const filename = instance.get__filename();
     return new Proxy({} as T, {
-        get(target: T, p: string, receiver: any): any {
-            return (...args: any[]) => {
+        get(target: T, p: string): unknown {
+            return (...args: unknown[]) => {
                 return new TrackedPromise((resolve, reject, isSettled) => {
                     let weAreTerminating = false;
                     const worker = new Worker(
@@ -45,7 +45,7 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                                 try {
                                     weAreTerminating = true;
                                     await worker.terminate();
-                                } catch (e) {
+                                } catch {
                                     //ignore
                                 }
                                 reject(new ThreadosaurusError('CreateThreadosaurus execution timed out'));
@@ -53,7 +53,7 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                         }, maxRunTimeMs);
                     }
 
-                    worker.on('message', (result: { error?: any; output: any }) => {
+                    worker.on('message', (result: { error?: unknown; output: unknown }) => {
                         if (weAreTerminating) {
                             /* istanbul ignore next */
                             return;
@@ -95,12 +95,12 @@ if (!isMainThread) {
                 filename = filename + (isTypescript ? '.ts' : '.js');
             }
 
-            const module: { default: { new (): any } } = await import(filename);
+            const module: { default: { new (): unknown } } = await import(filename);
             if (!module.default || module.default.name !== input.className) {
                 throw new ThreadosaurusError('The worker class must be the default export');
             }
 
-            const instance = new module.default() as { [key: string]: (...args: any[]) => any };
+            const instance = new module.default() as { [key: string]: (...args: unknown[]) => unknown };
             if (typeof instance[input.p] !== 'function') {
                 throw new ThreadosaurusError(`method: '${input.p}' not found on class '${input.className}'`);
             }
@@ -124,7 +124,7 @@ if (!isMainThread) {
 
 export class ThreadosaurusError extends Error {}
 
-type WorkerDataType = { source: string; className: string; args: any[]; filename: string; p: string };
+type WorkerDataType = { source: string; className: string; args: unknown[]; filename: string; p: string };
 
 export interface Threadosaurus {
     get__filename(): string;

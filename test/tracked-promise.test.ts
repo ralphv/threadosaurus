@@ -15,7 +15,7 @@ describe('TrackedPromise', () => {
                 reject(new Error('failed'));
                 reject(new Error('failed 1'));
             });
-            fail(`this should fail`);
+            fail('this should fail');
         } catch (e) {
             expect(String(e)).toEqual('Error: failed');
         }

@@ -2,7 +2,7 @@ export default class TrackedPromise<T> extends Promise<T> {
     constructor(
         executor: (
             resolve: (value: T | PromiseLike<T>) => void,
-            reject: (reason?: any) => void,
+            reject: (reason?: unknown) => void,
             isSettled: () => boolean,
         ) => void,
         singleCall: boolean = true,
@@ -17,7 +17,7 @@ export default class TrackedPromise<T> extends Promise<T> {
                     settled = true;
                     _resolve(value);
                 },
-                (reason?: any) => {
+                (reason?: unknown) => {
                     if (singleCall && settled) {
                         return;
                     }

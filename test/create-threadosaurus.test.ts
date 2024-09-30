@@ -30,7 +30,7 @@ describe('CreateThreadosaurus', () => {
         const worker = CreateThreadosaurus(SampleClass);
         try {
             await worker.error();
-            fail(`this should fail`);
+            fail('this should fail');
         } catch (e) {
             expect(String(e)).toEqual('Error: This is an exception');
         }
@@ -39,7 +39,7 @@ describe('CreateThreadosaurus', () => {
         const worker = CreateThreadosaurus(SampleClass, 100);
         try {
             await worker.long();
-            fail(`this should fail`);
+            fail('this should fail');
         } catch (e) {
             expect(String(e)).toEqual('Error: CreateThreadosaurus execution timed out');
         }
@@ -48,28 +48,28 @@ describe('CreateThreadosaurus', () => {
         try {
             class AnyClass {}
 
-            // @ts-ignore
+            // @ts-expect-error force for test
             const worker = CreateThreadosaurus(AnyClass) as SampleClass;
             await worker.add(1, 2);
-            fail(`this should fail`);
+            fail('this should fail');
         } catch (e) {
-            expect(String(e)).toEqual("Error: method: 'get__filename' not found on class 'AnyClass'");
+            expect(String(e)).toEqual(`Error: method: 'get__filename' not found on class 'AnyClass'`);
         }
     });
     it('test missing method', async () => {
         try {
             const worker = CreateThreadosaurus(SampleClassMissingAdd) as SampleClass;
             await worker.add(1, 2);
-            fail(`this should fail`);
+            fail('this should fail');
         } catch (e) {
-            expect(String(e)).toEqual("Error: method: 'add' not found on class 'SampleClassMissingAdd'");
+            expect(String(e)).toEqual(`Error: method: 'add' not found on class 'SampleClassMissingAdd'`);
         }
     });
     it('test exit(0)', async () => {
         const worker = CreateThreadosaurus(SampleClass);
         try {
             await worker.exit(0);
-            fail(`this should fail`);
+            fail('this should fail');
         } catch (e) {
             expect(String(e)).toEqual('Error: Worker stopped with exit code 0');
         }
@@ -78,7 +78,7 @@ describe('CreateThreadosaurus', () => {
         const worker = CreateThreadosaurus(SampleClass);
         try {
             await worker.exit(1);
-            fail(`this should fail`);
+            fail('this should fail');
         } catch (e) {
             expect(String(e)).toEqual('Error: Worker stopped with exit code 1');
         }
@@ -87,7 +87,7 @@ describe('CreateThreadosaurus', () => {
         const worker = CreateThreadosaurus(SampleClass);
         try {
             await worker.nonBasicArguments(jest);
-            fail(`this should fail`);
+            fail('this should fail');
         } catch (e) {
             expect(String(e)).toContain('DataCloneError:');
         }
@@ -96,7 +96,7 @@ describe('CreateThreadosaurus', () => {
         const worker = CreateThreadosaurus(SampleClassNotDefault);
         try {
             await worker.add(1, 2);
-            fail(`this should fail`);
+            fail('this should fail');
         } catch (e) {
             expect(String(e)).toContain('Error: The worker class must be the default export');
         }
