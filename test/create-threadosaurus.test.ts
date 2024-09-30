@@ -1,6 +1,7 @@
 import { CreateThreadosaurus } from '../src';
 import SampleClass from './SampleClass';
 import SampleClassMissingAdd from './SampleClassMissingAdd';
+import { SampleClassNotDefault } from './SampleClassNotDefault';
 
 jest.setTimeout(10000);
 
@@ -89,6 +90,15 @@ describe('CreateThreadosaurus', () => {
             fail(`this should fail`);
         } catch (e) {
             expect(String(e)).toContain('DataCloneError:');
+        }
+    });
+    it('test not default export', async () => {
+        const worker = CreateThreadosaurus(SampleClassNotDefault);
+        try {
+            await worker.add(1, 2);
+            fail(`this should fail`);
+        } catch (e) {
+            expect(String(e)).toContain('Error: The worker class must be the default export');
         }
     });
 });

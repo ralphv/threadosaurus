@@ -11,7 +11,7 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
     maxRunTimeMs: number = 0,
 ) {
     const instance = new ClassRef();
-    if (!instance.get__filename) {
+    if (typeof instance.get__filename !== 'function') {
         throw new ThreadosaurusError(`method: 'get__filename' not found on class '${instance.constructor.name}'`);
     }
     const filename = instance.get__filename();
@@ -96,6 +96,9 @@ if (!isMainThread) {
             }
 
             const module: { default: { new (): any } } = await import(filename);
+            if (!module.default || module.default.name !== input.className) {
+                throw new ThreadosaurusError('The worker class must be the default export');
+            }
 
             const instance = new module.default() as { [key: string]: (...args: any[]) => any };
             if (typeof instance[input.p] !== 'function') {

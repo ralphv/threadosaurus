@@ -15,7 +15,7 @@ npm i threadosaurus
 
 Here's a quick example of how to use Threadosaurus:
 ```typescript
-import { CreateThreadosaurus } from 'threadosaurus';
+import { CreateThreadosaurus, Threadosaurus } from 'threadosaurus';
 
 class SampleWorkerThreadClass implements Threadosaurus {
     async greet(name: string): Promise<string> {
@@ -23,7 +23,7 @@ class SampleWorkerThreadClass implements Threadosaurus {
     }
 }
 
-const worker = CreateThreadosaurus(SampleWorkerThreadClass);
+const worker = await CreateThreadosaurus(SampleWorkerThreadClass);
 console.log(await worker.greet('LJ and NJ'));
 ```
 
@@ -32,6 +32,7 @@ console.log(await worker.greet('LJ and NJ'));
 When using Threadosaurus, please keep the following limitations in mind:
 
 * The worker class must implement the **Threadosaurus interface**.
+* The worker class be **the default export**.
 * The worker class **cannot accept constructor arguments**.
 * The worker class will **not retain member variables** across method calls from the main thread.
 * All methods in the worker class **must be asynchronous**.

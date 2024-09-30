@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "sourceMap": true,
+    "sourceMap": false,
     "module": "commonjs",
     "target": "ESNext",
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
     "noImplicitAny": false,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true
   }
 }
