@@ -85,6 +85,7 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
     });
 }
 
+/* istanbul ignore start */
 if (!isMainThread) {
     void (async () => {
         try {
@@ -122,6 +123,8 @@ if (!isMainThread) {
         }
     })();
 }
+
+/* istanbul ignore end */
 
 export class ThreadosaurusError extends Error {}
 

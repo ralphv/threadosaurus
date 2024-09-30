@@ -50,7 +50,7 @@ describe('CreateThreadosaurus', () => {
             await worker.add(1, 2);
             fail(`this should fail`);
         } catch (e) {
-            expect(String(e)).toEqual("Error: method: 'get__filename' not found on class 'Object'");
+            expect(String(e)).toEqual("Error: method: 'get__filename' not found on class 'AnyClass'");
         }
     });
     it('test missing method', async () => {
