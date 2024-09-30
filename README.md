@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/threadosaurus)](https://www.npmjs.com/package/threadosaurus)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/ralphv/threadosaurus/ci.yml?branch=main)](https://github.com/ralphv/threadosaurus/actions)
 
-A super easy way to use worker threads in Node.js with TypeScript
+A simple and intuitive way to utilize worker threads in Node.js with TypeScript.
 
 ## install
 
@@ -13,6 +13,7 @@ npm i threadosaurus
 
 ## Usage
 
+Here's a quick example of how to use Threadosaurus:
 ```typescript
 import { CreateThreadosaurus } from 'threadosaurus';
 
@@ -28,12 +29,14 @@ console.log(await worker.greet('LJ and NJ'));
 
 ## Restrictions
 
-* The worker class should implement interface `Threadosaurus`.
-* The worker class can not have `constructor arguments`.
-* The worker class will `not retain member variables` across main thread method calls.
-* All methods on the worker class `should be async`.
-* All arguments on methods on the worker class `should be basic types`.
-* It's best to design your class methods as pure functions.
+When using Threadosaurus, please keep the following limitations in mind:
+
+* The worker class must implement the **Threadosaurus interface**.
+* The worker class **cannot accept constructor arguments**.
+* The worker class will **not retain member variables** across method calls from the main thread.
+* All methods in the worker class **must be asynchronous**.
+* All method arguments in the worker class **must be basic types**, complex types cannot be passed to the worker.
+* It is recommended to design your class methods as **pure functions** for better predictability.
 
 ## License
 
