@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "build": "tsc -p build.tsconfig.json && npm run lint && npm run test",
+    "compile": "tsc -p build.tsconfig.json",
     "test": "jest",
     "coverage": "jest --coverage",
     "lint": "eslint 'src/**/*.ts' 'test/**/*.ts' --fix",

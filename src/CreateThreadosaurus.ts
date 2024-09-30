@@ -15,13 +15,16 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
         throw new ThreadosaurusError(`method: 'get__filename' not found on class '${instance.constructor.name}'`);
     }
     const filename = instance.get__filename();
+    const isTypescriptFromClass = extname(filename) === '.ts';
     return new Proxy({} as T, {
         get(target: T, p: string): unknown {
             return (...args: unknown[]) => {
                 return new TrackedPromise((resolve, reject, isSettled) => {
                     let weAreTerminating = false;
                     const worker = new Worker(
-                        !isTypescript ? __filename : `require('ts-node').register(); require('${__filename}');`,
+                        isTypescript || isTypescriptFromClass
+                            ? `require('ts-node').register(); require('${__filename}');`
+                            : __filename,
                         {
                             workerData: Expect<WorkerDataType>({
                                 source: CreateThreadosaurus.name,
@@ -30,7 +33,7 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                                 filename,
                                 p,
                             }),
-                            eval: isTypescript,
+                            eval: isTypescript || isTypescriptFromClass,
                         },
                     );
 
