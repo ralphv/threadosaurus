@@ -4,7 +4,15 @@
 [![Build Status](https://img.shields.io/github/actions/workflow/status/ralphv/threadosaurus/build.yml?branch=main)](https://github.com/ralphv/threadosaurus/actions)
 [![codecov](https://codecov.io/gh/ralphv/threadosaurus/branch/main/graph/badge.svg)](https://codecov.io/gh/ralphv/threadosaurus)
 
-A simple and intuitive way to utilize worker threads in Node.js with TypeScript.
+<p align="center">
+    <a href="https://gallifrey-rules.dev">
+      <img src="https://raw.githubusercontent.com/ralphv/threadosaurus/main/resources/threadosaurus-mini.png" alt="Logo" width="250" height="250">
+    </a>
+    <h3 align="center">Threadosaurus</h3>
+    <p align="center">
+        A simple and intuitive way to utilize worker threads in Node.js with TypeScript.
+    </p>
+</p>
 
 ## install
 
