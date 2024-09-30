@@ -1,5 +1,5 @@
-import { CreateThreadosaurus } from './CreateThreadosaurus';
 import SampleWorkerThreadClass from './SampleWorkerThreadClass';
+import { CreateThreadosaurus } from '../src';
 
 void (async () => {
     const worker = CreateThreadosaurus(SampleWorkerThreadClass);
