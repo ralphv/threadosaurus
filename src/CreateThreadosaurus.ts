@@ -7,6 +7,9 @@ const fileExtension = extname(__filename);
 const isTypescript = fileExtension === '.ts';
 
 export function CreateThreadosaurus<T extends Threadosaurus>(instance: T, maxRunTimeMs: number = 0) {
+    if (!instance.get__filename) {
+        throw new ThreadosaurusError(`method: 'get__filename' not found on class '${instance.constructor.name}'`);
+    }
     const filename = instance.get__filename();
     return new Proxy({} as T, {
         get(target: T, p: string, receiver: any): any {
@@ -18,6 +21,7 @@ export function CreateThreadosaurus<T extends Threadosaurus>(instance: T, maxRun
                         {
                             workerData: Expect<WorkerDataType>({
                                 source: CreateThreadosaurus.name,
+                                className: instance.constructor.name,
                                 args,
                                 filename,
                                 p,
@@ -39,7 +43,7 @@ export function CreateThreadosaurus<T extends Threadosaurus>(instance: T, maxRun
                                 } catch (e) {
                                     //ignore
                                 }
-                                reject(new CreateThreadosaurusTimeoutError('CreateThreadosaurus execution timed out'));
+                                reject(new ThreadosaurusError('CreateThreadosaurus execution timed out'));
                             })();
                         }, maxRunTimeMs);
                     }
@@ -94,6 +98,9 @@ if (!isMainThread) {
             const module: { default: { new (): any } } = await import(filename);
 
             const instance = new module.default() as { [key: string]: (...args: any[]) => any };
+            if (typeof instance[input.p] !== 'function') {
+                throw new ThreadosaurusError(`method: '${input.p}' not found on class '${input.className}'`);
+            }
             const result = await instance[input.p](...input.args);
 
             parentPort?.postMessage({
@@ -108,9 +115,9 @@ if (!isMainThread) {
     })();
 }
 
-export class CreateThreadosaurusTimeoutError extends Error {}
+export class ThreadosaurusError extends Error {}
 
-type WorkerDataType = { source: string; args: any[]; filename: string; p: string };
+type WorkerDataType = { source: string; className: string; args: any[]; filename: string; p: string };
 
 export interface Threadosaurus {
     get__filename(): string;

@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import { CreateThreadosaurus } from '../src';
 import SampleClass from './SampleClass';
+import SampleClassMissingAdd from './SampleClassMissingAdd';
 
 describe('CreateThreadosaurus', () => {
     it('test addObject', async () => {
@@ -39,6 +40,24 @@ describe('CreateThreadosaurus', () => {
             expect.fail(`this should fail`);
         } catch (e) {
             expect(String(e)).to.equal('Error: CreateThreadosaurus execution timed out');
+        }
+    });
+    it('test missing get__filename', async () => {
+        try {
+            const worker = CreateThreadosaurus({} as SampleClass);
+            await worker.add(1, 2);
+            expect.fail(`this should fail`);
+        } catch (e) {
+            expect(String(e)).to.equal("Error: method: 'get__filename' not found on class 'Object'");
+        }
+    });
+    it('test missing method', async () => {
+        try {
+            const worker = CreateThreadosaurus(new SampleClassMissingAdd() as SampleClass);
+            await worker.add(1, 2);
+            expect.fail(`this should fail`);
+        } catch (e) {
+            expect(String(e)).to.equal("Error: method: 'add' not found on class 'SampleClassMissingAdd'");
         }
     });
 });
