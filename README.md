@@ -6,7 +6,7 @@
 
 <p align="center">
     <a href="https://www.npmjs.com/package/threadosaurus">
-      <img src="https://raw.githubusercontent.com/ralphv/threadosaurus/main/resources/threadosaurus-mini.png" alt="Logo" width="250" height="250">
+      <img src="https://raw.githubusercontent.com/ralphv/threadosaurus/main/resources/threadosaurus-mini.png" alt="Logo">
     </a>
     <h3 align="center">Threadosaurus</h3>
     <p align="center">
