@@ -56,8 +56,8 @@ When using Threadosaurus, please keep the following limitations in mind:
 * The worker class **cannot accept constructor arguments**.
 * The worker class will **not retain member variables** across method calls from the main thread.
 * All methods in the worker class **must be asynchronous**.
-* All method arguments in the worker class **must be worker threads compatible types
-  **. [More here](https://nodejs.org/api/worker_threads.html).
+* All method arguments in the worker class **must be worker threads compatible types**.
+  [More here](https://nodejs.org/api/worker_threads.html).
 * It is recommended to design your class methods as **pure functions** for better predictability.
 
 ## License
