@@ -1,4 +1,4 @@
-import { Threadosaurus } from '../src';
+import { type Threadosaurus } from '../src';
 
 export default class SampleClass implements Threadosaurus {
     async addObject(args: { a: number; b: number }): Promise<number> {

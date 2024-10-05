@@ -19,7 +19,9 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                 return new TrackedPromise((resolve, reject, isSettled) => {
                     let weAreTerminating = false;
                     const worker = new Worker(
-                        isWorkerTypescript ? `require('ts-node').register(); require('${__filename}');` : __filename,
+                        isWorkerTypescript
+                            ? `if (typeof Bun === "undefined") {require('ts-node').register();} require('${__filename}');`
+                            : __filename,
                         {
                             workerData: Expect<WorkerDataType>({
                                 source: CreateThreadosaurus.name,
@@ -69,7 +71,9 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                         if (weAreTerminating) {
                             return;
                         }
-                        reject(new ThreadosaurusError(`Worker stopped with exit code ${code}`));
+                        if (code !== 0) {
+                            reject(new ThreadosaurusError(`Worker stopped with exit code ${code}`));
+                        }
                     });
                 }, true);
             };
