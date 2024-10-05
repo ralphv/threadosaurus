@@ -71,9 +71,7 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                         if (weAreTerminating) {
                             return;
                         }
-                        if (code !== 0) {
-                            reject(new ThreadosaurusError(`Worker stopped with exit code ${code}`));
-                        }
+                        reject(new ThreadosaurusError(`Worker stopped with exit code ${code}`));
                     });
                 }, true);
             };
