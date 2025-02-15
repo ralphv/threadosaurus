@@ -3,9 +3,12 @@ import { extname } from 'path';
 import TrackedPromise from './TrackedPromise';
 import { Expect } from './Expect';
 
+const FORCE_EXIT_MESSAGE = 'force_exit';
+
 export function CreateThreadosaurus<T extends Threadosaurus>(
     ClassRef: new (...args: unknown[]) => T,
     maxRunTimeMs: number = 0,
+    forceTerminate: boolean = false,
 ) {
     const instance = new ClassRef();
     if (typeof instance.get__filename !== 'function') {
@@ -44,6 +47,9 @@ export function CreateThreadosaurus<T extends Threadosaurus>(
                                 }
                                 try {
                                     weAreTerminating = true;
+                                    if (forceTerminate) {
+                                        worker.postMessage(FORCE_EXIT_MESSAGE);
+                                    }
                                     await worker.terminate();
                                 } catch {
                                     //ignore
@@ -91,6 +97,12 @@ if (!isMainThread) {
                 // this is not intended for this class
                 return;
             }
+            parentPort?.on('message', (message: string) => {
+                if (message === FORCE_EXIT_MESSAGE) {
+                    process.exit(-1);
+                }
+            });
+
             let filename = input.filename;
 
             if (!extname(filename)) {

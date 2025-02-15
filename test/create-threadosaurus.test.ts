@@ -44,6 +44,15 @@ describe('CreateThreadosaurus', () => {
             expect(String(e)).toEqual('Error: CreateThreadosaurus execution timed out');
         }
     });
+    it('test timeout with forced terminate', async () => {
+        const worker = CreateThreadosaurus(SampleClass, 100, true);
+        try {
+            await worker.infinite();
+            fail('this should fail');
+        } catch (e) {
+            expect(String(e)).toEqual('Error: CreateThreadosaurus execution timed out');
+        }
+    });
     it('test missing get__filename', async () => {
         try {
             class AnyClass {}
